@@ -1,61 +1,112 @@
-function add(numberOne, numberTwo) {
-    return result = numberOne + numberTwo;
+const display = document.querySelector('.display');
+var displayValue = 0;
+display.textContent = displayValue;
+var firstValue = undefined;
+var secondValue = undefined;
+let operator;
+let result = null;
+
+function add(firstValue, secondValue) {
+    return result = firstValue + secondValue;
 }
 
-function subtract(numberOne, numberTwo) {
-    return result = numberOne - numberTwo;
+function subtract(firstValue, secondValue) {
+    return result = firstValue - secondValue;
 }
 
-function multiply(numberOne, numberTwo) {
-    return result = numberOne * numberTwo;
+function multiply(firstValue, secondValue) {
+    return result = firstValue * secondValue;
 }
 
-function divide(numberOne, numberTwo) {
+function divide(firstValue, secondValue) {
     // First checks to see if the divisor is zero, chastises the user if so. 
-    if (numberTwo == 0) {
+    if (secondValue == 0) {
         return result = "You know better than to divide by zero. Use your head.";
     } else {
-        return result = numberOne / numberTwo;
+        return result = firstValue / secondValue;
     }
 }
 
-function operate(operator, numberOne, numberTwo) {
+function operate(operator, firstValue, secondValue) {
     switch(operator) {
-        case 0: // Addition
-            add(numberOne, numberTwo);
+        case "add":
+            result = displayValue = add(firstValue, secondValue);
+            updateDisplay(result);
             break;
-        case 1: // Subtraction
-            subtract(numberOne, numberTwo);
+        case "subtract":
+            result = subtract(firstValue, secondValue);
+            updateDisplay(result);
             break;
-        case 2: // Multiplication
-            multiply(numberOne, numberTwo);
+        case "multiply":
+            result = multiply(firstValue, secondValue);
+            updateDisplay(result);
             break;
-        case 3: // Division
-            divide(numberOne, numberTwo);
+        case "divide": 
+            result = divide(firstValue, secondValue);
+            updateDisplay(result);
             break;
         default: 
             break;
     }
 }
 
-operate(0, 10, 1);
-console.log(result);
-
-const display = document.querySelector('.display');
-var displayValue = 0;
-display.textContent = displayValue;
-
 function updateDisplay(buttonId) {
-    if (buttonId == "clear") {
+    if (firstValue === undefined) {
+        if (buttonId == "clear") {
+            displayValue = 0;
+            operator = undefined;
+            result = null;
+        } else if (buttonId == "zero" && display.textContent == 0) {
+            displayValue = 0;
+        } else if (display.textContent == 0 && buttonId != "zero") {
+            displayValue = buttonId;
+        } else if (buttonId == "." && displayValue.includes(".")) {
+            console.log("this message is here because the decimal button was pressed more than once and i don't know how to make javascript just do nothing yet");
+        } else {
+            displayValue += buttonId;
+        }
+    } else if (firstValue != undefined) {
         displayValue = 0;
-    } else if (buttonId == "zero" && display.textContent == 0) {
-        displayValue = 0;
-    } else if (display.textContent == 0 && buttonId != "zero") {
-        displayValue = buttonId;
-    } else if (buttonId == "." && displayValue.includes(".")) {
-        console.log("this message is here because the decimal button was pressed more than once and i don't know how to make javascript just do nothing yet");
-    } else {
-        displayValue += buttonId;
+        if (buttonId == "clear") {
+            displayValue = 0;
+            firstValue = undefined;
+            operator = undefined;
+            result = null;
+        } else if (buttonId == "zero" && display.textContent == 0) {
+            displayValue = 0;
+        } else if (display.textContent == 0 && buttonId != "zero") {
+            displayValue = buttonId;
+            secondValue = buttonId;
+        } else if (buttonId == "." && displayValue.includes(".")) {
+            console.log("this message is here because the decimal button was pressed more than once and i don't know how to make javascript just do nothing yet");
+        } else {
+            displayValue += buttonId;
+        }
     }
     display.textContent = displayValue;
+}
+
+function operatorEntered(buttonId) {
+    firstValue = displayValue;
+    operator = buttonId;
+}
+
+function equals() {
+    secondValue = displayValue;
+    console.log(operator);
+    operate(operator, firstValue, secondValue);
+}
+
+function clear(buttonId) {
+    if (buttonId = "clear") {
+        console.log(displayValue, firstValue, secondValue, operator, result);
+        displayValue = 0;
+        firstValue = undefined;
+        secondValue = undefined;
+        operator = undefined;
+        result = undefined;
+        console.log(displayValue, firstValue, secondValue, operator, result);        
+    } else {
+        console.log("this is weird");
+    }
 }

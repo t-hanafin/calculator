@@ -42,16 +42,18 @@ operate(0, 10, 1);
 console.log(result);
 
 const display = document.querySelector('.display');
-display.textContent = 0;
+var displayValue = 0;
+display.textContent = displayValue;
 
 function updateDisplay(buttonId) {
     if (buttonId == "clear") {
-        display.textContent = 0;
+        displayValue = 0;
     } else if (buttonId == "zero" && display.textContent == 0) {
-        display.textContent = 0;
+        displayValue = 0;
     } else if (display.textContent == 0 && buttonId != "zero") {
-        display.textContent = buttonId;
+        displayValue = buttonId;
     } else {
-        display.textContent += buttonId;
-    }    
+        displayValue += buttonId;
+    }
+    display.textContent = displayValue;
 }

@@ -38,5 +38,6 @@ function operate(operator, numberOne, numberTwo) {
     }
 }
 
-operate(0, 10, 5);
+operate(0, 10, 1);
 console.log(result);
+

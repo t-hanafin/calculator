@@ -1,3 +1,50 @@
 body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     background-color: lightskyblue;
+    font-family: Helvetica, Arial, sans-serif ;
+}
+
+.container {
+    display: flex;
+    background-color: lightgreen;
+    width: 250px;
+    height: 75px;
+}
+
+#top, button, .display {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+#bottom, button, .display {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.display {
+    display: flex;
+    flex: 1 0 auto;
+    background-color: lightgrey;
+    margin: 5px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 7px 7px;
+    font-size: 30px;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1;
+    border: 2px solid black;
+    background-color: lightblue;
+    margin: 5px;
+    font-size: 20px;
+}
+
+#zero {
+    flex-grow: 2.666666666666;
 }

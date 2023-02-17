@@ -52,6 +52,8 @@ function updateDisplay(buttonId) {
         displayValue = 0;
     } else if (display.textContent == 0 && buttonId != "zero") {
         displayValue = buttonId;
+    } else if (buttonId == "." && displayValue.includes(".")) {
+        console.log("this message is here because the decimal button was pressed more than once and i don't know how to make javascript just do nothing yet");
     } else {
         displayValue += buttonId;
     }

@@ -41,3 +41,17 @@ function operate(operator, numberOne, numberTwo) {
 operate(0, 10, 1);
 console.log(result);
 
+const display = document.querySelector('.display');
+display.textContent = 0;
+
+function updateDisplay(buttonId) {
+    if (buttonId == "clear") {
+        display.textContent = 0;
+    } else if (buttonId == "zero" && display.textContent == 0) {
+        display.textContent = 0;
+    } else if (display.textContent == 0 && buttonId != "zero") {
+        display.textContent = buttonId;
+    } else {
+        display.textContent += buttonId;
+    }    
+}

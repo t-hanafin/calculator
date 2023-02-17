@@ -10,34 +10,34 @@
     </head>
     <body>
         <div class="container" id="top">
-            <div class="display">123,456,789.00</div>
+            <div class="display"></div>
         </div>
         <div class="container">
-            <button class="button" id="C">C</button>
+            <button class="button" id="clear" onclick="updateDisplay(this.id)">C</button>
             <button class="button" id="+/-">+/-</button>
             <button class="button" id="%">%</button>
             <button class="button" id="÷">÷</button>
         </div>
         <div class="container">
-            <button class="button" id=7>7</button>
-            <button class="button" id=8>8</button>
-            <button class="button" id=9>9</button>
+            <button class="button" id=7 onclick="updateDisplay(this.id)">7</button>
+            <button class="button" id=8 onclick="updateDisplay(this.id)">8</button>
+            <button class="button" id=9 onclick="updateDisplay(this.id)">9</button>
             <button class="button" id="*">x</button>
         </div>
         <div class="container">
-            <button class="button" id=4>4</button>
-            <button class="button" id=5>5</button>
-            <button class="button" id=6>6</button>
+            <button class="button" id=4 onclick="updateDisplay(this.id)">4</button>
+            <button class="button" id=5 onclick="updateDisplay(this.id)">5</button>
+            <button class="button" id=6 onclick="updateDisplay(this.id)">6</button>
             <button class="button" id="-">-</button>
         </div>
         <div class="container">
-                <button class="button" id=1>1</button>
-                <button class="button" id=2>2</button>
-                <button class="button" id=3>3</button>
+                <button class="button" id=1 onclick="updateDisplay(this.id)">1</button>
+                <button class="button" id=2 onclick="updateDisplay(this.id)">2</button>
+                <button class="button" id=3 onclick="updateDisplay(this.id)">3</button>
                 <button class="button" id="+">+</button>
         </div>
         <div class="container" id="bottom">
-            <button class="button" id="zero">0</button>
+            <button class="button" id="zero" onclick="updateDisplay(0)">0</button>
             <button class="button" id=".">.</button>
             <button class="button" id="=">=</button>
         </div>

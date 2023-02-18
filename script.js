@@ -1,12 +1,11 @@
 const display = document.querySelector('.display');
-var displayValue = 0;
+let displayValue = 0;
 display.textContent = displayValue;
 var firstValue = null;
 let secondValue = null;
 let operator;
 var result = null;
-operatorLastPressed = false;
-equalsLastPressed = false;
+lastPressed = false;
 
 // Receives function call from a button, calls subsequent function based on buttonID.
 
@@ -38,19 +37,18 @@ function clear() {
     firstValue = undefined;
     operator = undefined;
     result = null;
-    operatorLastPressed = false;
-    equalsLastPressed = false;
+    lastPressed = false;
+    display.style.cssText += "font-size: 2.5rem";
 }
 
 function operatorPressed(buttonId) {
     firstValue = displayValue;
     operator = buttonId;
-    operatorLastPressed = true;
-    equalsLastPressed = false;
+    lastPressed = "operator";
 }
 
 function numberPressed(buttonId) {
-    if (operatorLastPressed === true || displayValue === 0) {
+    if (lastPressed === "operator" || displayValue === 0) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorLastPressed = false;
@@ -58,31 +56,27 @@ function numberPressed(buttonId) {
         displayValue += buttonId;
         updateDisplay(displayValue);
     }
-    operatorLastPressed = false;
-    equalsLastPressed = false;
+    lastPressed = "number";
 }
 
 function decimalPressed() {
-    operatorLastPressed = false;
-    equalsLastPressed = false;
+    lastPressed = "decimal";
     let addDecimal = displayValue.includes(".");
-    if (addDecimal == false) {
+    if (addDecimal === false) {
         displayValue += ".";
         updateDisplay(displayValue);
     }
 }
 
 function equalsPressed() {
-    operatorLastPressed = false;
-    if (equalsLastPressed === false) {
-        equalsLastPressed = true;
+    if (lastPressed != "equals") {
+        lastPressed = "equals";
         secondValue = displayValue;
         operate(operator, firstValue, secondValue);
-    } else if (equalsLastPressed === true) {
+    } else if (lastPressed === "equals") {
         firstValue = displayValue;
         operate(operator, firstValue, secondValue);
     }
-    equalsLastPressed = true;
 }
 
 function plusMinusPressed() {
@@ -95,10 +89,19 @@ function percentPressed() {
     updateDisplay(displayValue);
 }
 
-// Updates display.
+// Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-    display.textContent = displayValue;
+    const shouldBeError = displayValue.toString().includes("+");
+    if (shouldBeError) {
+        displayValue = "error";
+        display.textContent = displayValue;
+    } else if (displayValue.toString().length > 9) {
+        display.style.cssText += "font-size: 1rem";
+        display.textContent = displayValue
+    } else {
+        display.textContent = displayValue;
+    }
 }
 
 // Mathematical functions.

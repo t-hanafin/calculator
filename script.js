@@ -13,6 +13,8 @@ equalsLastPressed = false;
 function buttonPressed(buttonId) {
     if (buttonId >= 0 && buttonId < 10) {
         numberPressed(buttonId);
+    } else if (buttonId == "zerozero") {
+        zeroZeroPressed();
     } else if (buttonId === "clear") { 
         clear();
     } else if (buttonId === "add" || buttonId === "subtract" || buttonId === "divide" || buttonId === "multiply") { 
@@ -122,6 +124,11 @@ function divide(firstValue, secondValue) {
         console.log(firstValue, secondValue);
         return result = parseFloat(firstValue) / parseFloat(secondValue);
     }
+}
+
+function zeroZeroPressed() {
+    buttonPressed(0);
+    buttonPressed(0);
 }
 
 

@@ -1,31 +1,32 @@
 const display = document.querySelector('.display');
 let displayValue = 0;
 display.textContent = displayValue;
-var firstValue = null;
-let secondValue = null;
+var firstOperand = null;
+let secondOperand = null;
 let operator;
 var result = null;
-lastPressed = false;
+var equalsActive = false;
+var operatorActive = false;
 
 // Receives function call from a button, calls subsequent function based on buttonID.
 
-function buttonPressed(buttonId) {
+function buttonPress(buttonId) {
     if (buttonId >= 0 && buttonId < 10) {
-        numberPressed(buttonId);
+        numberPress(buttonId);
     } else if (buttonId == "zerozero") {
-        zeroZeroPressed();
+        zeroZeroPress();
     } else if (buttonId === "clear") { 
         clear();
     } else if (buttonId === "add" || buttonId === "subtract" || buttonId === "divide" || buttonId === "multiply") { 
-        operatorPressed(buttonId);
+        operatorPress(buttonId);
     } else if (buttonId === ".") {
-        decimalPressed();
+        decimalPress();
     } else if (buttonId === "equals") {
-        equalsPressed();
+        equalsPress();
     } else if (buttonId === "+/-") {
-        plusMinusPressed();
+        plusMinusPress();
     } else if (buttonId === "%") {
-        percentPressed();
+        percentPress();
     }
 }
 
@@ -34,33 +35,33 @@ function buttonPressed(buttonId) {
 function clear() {
     displayValue = 0;
     updateDisplay(displayValue);
-    firstValue = undefined;
+    firstOperand = undefined;
+    secondOperand = undefined;
     operator = undefined;
     result = null;
-    lastPressed = false;
-    display.style.cssText += "font-size: 2.5rem";
+    equalsActive = false;
+    operatorActive = false;
+    display.style.cssText += "font-size: 30px;padding: 7px;";
 }
 
-function operatorPressed(buttonId) {
-    firstValue = displayValue;
+function operatorPress(buttonId) {
+    firstOperand = displayValue;
     operator = buttonId;
-    lastPressed = "operator";
+    operatorActive = true;
 }
 
-function numberPressed(buttonId) {
-    if (lastPressed === "operator" || displayValue === 0) {
+function numberPress(buttonId) {
+    if (operatorActive === true || displayValue === 0) {
         displayValue = buttonId;
+        operatorActive = false;
         updateDisplay(displayValue);
-        operatorLastPressed = false;
-    } else {
+    } else if (operatorActive === false) {
         displayValue += buttonId;
         updateDisplay(displayValue);
     }
-    lastPressed = "number";
 }
 
-function decimalPressed() {
-    lastPressed = "decimal";
+function decimalPress() {
     let addDecimal = displayValue.includes(".");
     if (addDecimal === false) {
         displayValue += ".";
@@ -68,23 +69,23 @@ function decimalPressed() {
     }
 }
 
-function equalsPressed() {
-    if (lastPressed != "equals") {
-        lastPressed = "equals";
-        secondValue = displayValue;
-        operate(operator, firstValue, secondValue);
-    } else if (lastPressed === "equals") {
-        firstValue = displayValue;
-        operate(operator, firstValue, secondValue);
+function equalsPress() {
+    if (equalsActive === false) {
+        equalsActive = true;
+        secondOperand = displayValue;
+        operate(operator, firstOperand, secondOperand);
+    } else if (equalsActive === true) {
+        firstOperand = displayValue;
+        operate(operator, firstOperand, secondOperand);
     }
 }
 
-function plusMinusPressed() {
+function plusMinusPress() {
     displayValue = parseFloat(displayValue) * -1;
     updateDisplay(displayValue);
 }
 
-function percentPressed() {
+function percentPress() {
     displayValue = parseFloat(displayValue) * 0.01;
     updateDisplay(displayValue);
 }
@@ -96,8 +97,8 @@ function updateDisplay(displayValue) {
     if (shouldBeError) {
         displayValue = "error";
         display.textContent = displayValue;
-    } else if (displayValue.toString().length > 9) {
-        display.style.cssText += "font-size: 1rem";
+    } else if (displayValue.toString().length > 10) {
+        display.style.cssText += "font-size: 20px;padding: 12.75px;";
         display.textContent = displayValue
     } else {
         display.textContent = displayValue;
@@ -106,53 +107,53 @@ function updateDisplay(displayValue) {
 
 // Mathematical functions.
 
-function add(firstValue, secondValue) {
-    return result = parseFloat(firstValue) + parseFloat(secondValue);
+function add(firstOperand, secondOperand) {
+    return result = parseFloat(firstOperand) + parseFloat(secondOperand);
 }
 
-function subtract(firstValue, secondValue) {
-    return result = parseFloat(firstValue) - parseFloat(secondValue);
+function subtract(firstOperand, secondOperand) {
+    return result = parseFloat(firstOperand) - parseFloat(secondOperand);
 }
 
-function multiply(firstValue, secondValue) {
-    return result = parseFloat(firstValue) * parseFloat(secondValue);
+function multiply(firstOperand, secondOperand) {
+    return result = parseFloat(firstOperand) * parseFloat(secondOperand);
 }
 
-function divide(firstValue, secondValue) {
+function divide(firstOperand, secondOperand) {
     // First checks to see if the divisor is zero, chastises the user if so. 
-    if (secondValue === 0) {
+    if (secondOperand === 0) {
         alert("You know better than to divide by zero. Use your head.");
         return result = 0;
     } else {
-        console.log(firstValue, secondValue);
-        return result = parseFloat(firstValue) / parseFloat(secondValue);
+        console.log(firstOperand, secondOperand);
+        return result = parseFloat(firstOperand) / parseFloat(secondOperand);
     }
 }
 
-function zeroZeroPressed() {
-    buttonPressed(0);
-    buttonPressed(0);
+function zeroZeroPress() {
+    buttonPress(0);
+    buttonPress(0);
 }
 
 
 // Performs operation, updates display with result.
 
-function operate(operator, firstValue, secondValue) {
+function operate(operator, firstOperand, secondOperand) {
     switch(operator) {
         case "add":
-            displayValue = add(firstValue, secondValue);
+            displayValue = add(firstOperand, secondOperand);
             updateDisplay(displayValue);
             break;
         case "subtract":
-            displayValue = subtract(firstValue, secondValue);
+            displayValue = subtract(firstOperand, secondOperand);
             updateDisplay(displayValue);
             break;
         case "multiply":
-            displayValue = multiply(firstValue, secondValue);
+            displayValue = multiply(firstOperand, secondOperand);
             updateDisplay(displayValue);
             break;
         case "divide": 
-            displayValue = divide(firstValue, secondValue);
+            displayValue = divide(firstOperand, secondOperand);
             updateDisplay(displayValue);
             break;
     }

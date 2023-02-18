@@ -44,17 +44,36 @@ function clear() {
     display.style.cssText += "font-size: 30px;padding: 7px;";
 }
 
+
+/*
+
 function operatorPress(buttonId) {
     firstOperand = displayValue;
     operator = buttonId;
     operatorActive = true;
 }
 
+*/
+
+function operatorPress(buttonId) {
+    if (firstOperand == null) {
+        firstOperand = displayValue;
+        operator = buttonId;
+        operatorActive = true;
+    } else if (firstOperand != null) { // After this the first operand hasn't changed.
+        equalsPress();
+        equalsActive = false;
+        firstOperand = displayValue;
+        operator = buttonId;
+        operatorActive = true;
+    }
+}
+
 function numberPress(buttonId) {
     if (operatorActive === true || displayValue === 0) {
         displayValue = buttonId;
-        operatorActive = false;
         updateDisplay(displayValue);
+        operatorActive = false;
     } else if (operatorActive === false) {
         displayValue += buttonId;
         updateDisplay(displayValue);
@@ -88,6 +107,11 @@ function plusMinusPress() {
 function percentPress() {
     displayValue = parseFloat(displayValue) * 0.01;
     updateDisplay(displayValue);
+}
+
+function zeroZeroPress() {
+    buttonPress(0);
+    buttonPress(0);
 }
 
 // Updates display, shows error if the value is too long.
@@ -130,10 +154,6 @@ function divide(firstOperand, secondOperand) {
     }
 }
 
-function zeroZeroPress() {
-    buttonPress(0);
-    buttonPress(0);
-}
 
 
 // Performs operation, updates display with result.

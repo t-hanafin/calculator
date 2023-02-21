@@ -68,7 +68,7 @@ function numberPress(buttonId) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorActive = false;
-    } else if (operatorActive === false) {
+    } else if (operatorActive === false && displayValue.length < 11) {
         displayValue += buttonId;
         updateDisplay(displayValue);
     }
@@ -163,24 +163,18 @@ function operatorPress(buttonId) {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-    if (displayValue.toString().includes('+')) {
-        error();
-    } else if (displayValue.toString().length > 10) {
-        display.style.cssText += 'font-size: 26px;padding: 9.3px;';
-        display.textContent = displayValue
+    displayValue = displayValue.toString();
+    if (displayValue.includes('+') || displayValue.length > 12) {
+        displayValue = 'error';
+        display.textContent = displayValue;
+        for (const button of buttons) {
+            button.disabled = true;
+        }
+        clearButton.disabled = false;
     } else {
         display.textContent = displayValue;
     }
-}
-
-function error() {
-    display.style.cssText += 'font-size: 30px;padding: 7px;';
-    displayValue = 'error';
-    display.textContent = displayValue;
-    for (const button of buttons) {
-        button.disabled = true;
-    }
-    clearButton.disabled = false;
+    displayValue = parseFloat(displayValue);
 }
 
 // Mathematical functions.

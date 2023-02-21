@@ -61,10 +61,11 @@ function clear() {
 }
 
 function numberPress(buttonId) {
-    if (operatorActive == true || displayValue === 0) {
+    if (operatorActive == true || displayValue === 0 || equalsActive == true) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorActive = false;
+        equalsActive = false;
     } else if (operatorActive === false && displayValue.length < 11) {
         displayValue += buttonId;
         updateDisplay(displayValue);
@@ -149,8 +150,9 @@ function operatorPress(buttonId) {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
+    console.log(displayValue);
     displayValue = displayValue.toString();
-    if (displayValue.includes('+') || displayValue.length > 13) {
+    if (displayValue.includes('+') || displayValue.length > 123452343) {
         displayValue = 'error';
         display.textContent = displayValue;
         for (const button of buttons) {

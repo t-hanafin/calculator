@@ -1,10 +1,10 @@
 const display = document.querySelector('.display');
 let displayValue = 0;
 display.textContent = displayValue;
-var firstOperand = null;
-let secondOperand = null;
+var firstOperand = undefined;
+let secondOperand = undefined;
 let operator;
-var result = null;
+var result = undefined;
 var equalsActive = false;
 var operatorActive = false;
 
@@ -38,29 +38,18 @@ function clear() {
     firstOperand = undefined;
     secondOperand = undefined;
     operator = undefined;
-    result = null;
+    result = undefined;
     equalsActive = false;
     operatorActive = false;
     display.style.cssText += "font-size: 30px;padding: 7px;";
 }
-
-
-/*
-
-function operatorPress(buttonId) {
-    firstOperand = displayValue;
-    operator = buttonId;
-    operatorActive = true;
-}
-
-*/
 
 function operatorPress(buttonId) {
     if (firstOperand == null) {
         firstOperand = displayValue;
         operator = buttonId;
         operatorActive = true;
-    } else if (firstOperand != null) { // After this the first operand hasn't changed.
+    } else if (firstOperand != null) {
         equalsPress();
         equalsActive = false;
         firstOperand = displayValue;

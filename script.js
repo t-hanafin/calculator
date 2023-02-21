@@ -1,4 +1,6 @@
 const display = document.querySelector('.display');
+const buttons = document.getElementsByTagName("button");
+const clearButton = document.getElementById("clear");
 let displayValue = 0;
 display.textContent = displayValue;
 var firstOperand = undefined;
@@ -8,25 +10,25 @@ var result = undefined;
 var equalsActive = false;
 var operatorActive = false;
 
-// Receives function call from a button, calls subsequent function based on buttonID.
+// Receives function call from an HTML button, calls subsequent function based on buttonID.
 
 function buttonPress(buttonId) {
-    if (buttonId >= 0 && buttonId < 10) {
-        numberPress(buttonId);
-    } else if (buttonId == "zerozero") {
+    if (buttonId == "zerozero") {
         zeroZeroPress();
-    } else if (buttonId === "clear") { 
+    } else if (buttonId == "clear") { 
         clear();
-    } else if (buttonId === "add" || buttonId === "subtract" || buttonId === "divide" || buttonId === "multiply") { 
+    } else if (buttonId == "add" || buttonId === "subtract" || buttonId === "divide" || buttonId === "multiply") { 
         operatorPress(buttonId);
-    } else if (buttonId === ".") {
+    } else if (buttonId == ".") {
         decimalPress();
-    } else if (buttonId === "equals") {
+    } else if (buttonId == "equals") {
         equalsPress();
     } else if (buttonId === "+/-") {
         plusMinusPress();
     } else if (buttonId === "%") {
         percentPress();
+    } else if (buttonId >= 0 && buttonId < 10) {
+        numberPress(buttonId);
     }
 }
 
@@ -42,24 +44,20 @@ function clear() {
     equalsActive = false;
     operatorActive = false;
     display.style.cssText += "font-size: 30px;padding: 7px;";
-}
-
-function operatorPress(buttonId) {
-    if (firstOperand == null) {
-        firstOperand = displayValue;
-        operator = buttonId;
-        operatorActive = true;
-    } else if (firstOperand != null) {
-        equalsPress();
-        equalsActive = false;
-        firstOperand = displayValue;
-        operator = buttonId;
-        operatorActive = true;
+    for (const button of buttons) {
+        button.disabled = false;
     }
 }
 
+function operatorPress(buttonId) {
+    firstOperand = displayValue;
+    operator = buttonId;
+    operatorActive = true;
+    equalsActive = false;
+}
+
 function numberPress(buttonId) {
-    if (operatorActive === true || displayValue === 0) {
+    if (operatorActive === true || displayValue == 0) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorActive = false;
@@ -70,8 +68,7 @@ function numberPress(buttonId) {
 }
 
 function decimalPress() {
-    let addDecimal = displayValue.includes(".");
-    if (addDecimal === false) {
+    if (!displayValue.toString().includes(".")) {
         displayValue += ".";
         updateDisplay(displayValue);
     }
@@ -89,13 +86,17 @@ function equalsPress() {
 }
 
 function plusMinusPress() {
-    displayValue = parseFloat(displayValue) * -1;
-    updateDisplay(displayValue);
+    operator = "multiply";
+    firstOperand = displayValue;
+    secondOperand = -1;
+    operate(operator, firstOperand, secondOperand);
 }
 
 function percentPress() {
-    displayValue = parseFloat(displayValue) * 0.01;
-    updateDisplay(displayValue);
+    operator = "multiply";
+    firstOperand = displayValue;
+    secondOperand = 0.01;
+    operate(operator, firstOperand, secondOperand);
 }
 
 function zeroZeroPress() {
@@ -106,12 +107,17 @@ function zeroZeroPress() {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-    const shouldBeError = displayValue.toString().includes("+");
-    if (shouldBeError) {
+
+    if (displayValue.toString().includes("e")) {
+        display.style.cssText += "font-size: 30px;padding: 7px;";
         displayValue = "error";
         display.textContent = displayValue;
+        for (const button of buttons) {
+            button.disabled = true;
+        }
+        clearButton.disabled = false;
     } else if (displayValue.toString().length > 10) {
-        display.style.cssText += "font-size: 20px;padding: 12.75px;";
+        display.style.cssText += "font-size: 10px;padding: 18.5px;";
         display.textContent = displayValue
     } else {
         display.textContent = displayValue;
@@ -138,12 +144,9 @@ function divide(firstOperand, secondOperand) {
         alert("You know better than to divide by zero. Use your head.");
         return result = 0;
     } else {
-        console.log(firstOperand, secondOperand);
         return result = parseFloat(firstOperand) / parseFloat(secondOperand);
     }
 }
-
-
 
 // Performs operation, updates display with result.
 

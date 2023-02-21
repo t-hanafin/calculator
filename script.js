@@ -150,7 +150,6 @@ function operatorPress(buttonId) {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-    console.log(displayValue);
     displayValue = displayValue.toString();
     if (displayValue.includes('+') || displayValue.length > 123452343) {
         displayValue = 'error';

@@ -184,7 +184,7 @@ function divide(firstOperand, secondOperand) {
     }
 }
 
-// Performs operation, updates display with result.
+// Performs operation, returns result.
 
 function operate(operator, firstOperand, secondOperand) {
     switch(operator) {

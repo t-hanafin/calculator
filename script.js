@@ -53,7 +53,7 @@ function operatorPress(buttonId) {
     firstOperand = displayValue;
     operator = buttonId;
     operatorActive = true;
-    equalsActive = false;
+//    equalsActive = false;
 }
 
 function numberPress(buttonId) {
@@ -107,7 +107,7 @@ function zeroZeroPress() {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-    if (displayValue.toString().includes("e")) {
+    if (displayValue.toString().includes("+")) {
         error();
     } else if (displayValue.toString().length > 10) {
         display.style.cssText += "font-size: 10px;padding: 18.5px;";
@@ -142,9 +142,11 @@ function multiply(firstOperand, secondOperand) {
 }
 
 function divide(firstOperand, secondOperand) {
-    // First checks to see if the divisor is zero, chastises the user if so. 
-    if (secondOperand === 0) {
-        alert("You know better than to divide by zero. Use your head.");
+    // First checks to see if the divisor is zero, chastises the user and returns 'error' if so. 
+    if (secondOperand == 0) {
+        alert("You know better than to divide by zero. Use your head next time.");
+        firstOperand = undefined;
+        secondOperand = undefined;
         return result = 0;
     } else {
         return result = parseFloat(firstOperand) / parseFloat(secondOperand);

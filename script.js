@@ -63,8 +63,8 @@ function clear() {
 }
 
 function numberPress(buttonId) {
-    console.log(operatorActive, equalsActive);
-    if (operatorActive == true || displayValue == 0) {
+    console.log(displayValue);
+    if (operatorActive == true || displayValue === 0) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorActive = false;
@@ -87,6 +87,8 @@ function plusMinusPress() {
     firstOperand = displayValue;
     secondOperand = -1;
     operate(operator, firstOperand, secondOperand);
+    displayValue = result;
+    updateDisplay(displayValue);
 }
 
 function percentPress() {
@@ -94,6 +96,8 @@ function percentPress() {
     firstOperand = displayValue;
     secondOperand = 0.01;
     operate(operator, firstOperand, secondOperand);
+    displayValue = result;
+    updateDisplay(displayValue);
 }
 
 function zeroZeroPress() {
@@ -162,7 +166,7 @@ function updateDisplay(displayValue) {
     if (displayValue.toString().includes('+')) {
         error();
     } else if (displayValue.toString().length > 10) {
-        display.style.cssText += 'font-size: 10px;padding: 18.5px;';
+        display.style.cssText += 'font-size: 26px;padding: 9.3px;';
         display.textContent = displayValue
     } else {
         display.textContent = displayValue;

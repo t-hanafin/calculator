@@ -10,7 +10,6 @@ var result = undefined;
 var equalsActive = false;
 var operatorActive = false;
 
-
 // Listens for click events on the HTML buttons, 
 // calls subsequent function based on buttonID.
 
@@ -56,14 +55,12 @@ function clear() {
     result = undefined;
     equalsActive = false;
     operatorActive = false;
-    display.style.cssText += 'font-size: 30px;padding: 7px;';
-    for (const button of buttons) {
+    for (const button of buttons) { // This recovers from error.
         button.disabled = false;
     }
 }
 
 function numberPress(buttonId) {
-    console.log(displayValue);
     if (operatorActive == true || displayValue === 0) {
         displayValue = buttonId;
         updateDisplay(displayValue);
@@ -72,7 +69,6 @@ function numberPress(buttonId) {
         displayValue += buttonId;
         updateDisplay(displayValue);
     }
-    console.log(firstOperand, secondOperand);
 }
 
 function decimalPress() {
@@ -83,20 +79,12 @@ function decimalPress() {
 }
 
 function plusMinusPress() {
-    operator = 'multiply';
-    firstOperand = displayValue;
-    secondOperand = -1;
-    operate(operator, firstOperand, secondOperand);
-    displayValue = result;
+    displayValue *= -1;
     updateDisplay(displayValue);
 }
 
 function percentPress() {
-    operator = 'multiply';
-    firstOperand = displayValue;
-    secondOperand = 0.01;
-    operate(operator, firstOperand, secondOperand);
-    displayValue = result;
+    displayValue *= 0.01;
     updateDisplay(displayValue);
 }
 
@@ -123,7 +111,6 @@ function equalsPress() {
         displayValue = result;
         updateDisplay(displayValue);
     }
-    console.log(firstOperand, secondOperand);
 }
 
 // The operator buttons have three modes: the first time one is pressed, it 
@@ -157,14 +144,13 @@ function operatorPress(buttonId) {
         operatorActive = true;
     }
     operator = buttonId;
-    console.log(firstOperand, secondOperand);
 }
 
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
     displayValue = displayValue.toString();
-    if (displayValue.includes('+') || displayValue.length > 12) {
+    if (displayValue.includes('+') || displayValue.length > 13) {
         displayValue = 'error';
         display.textContent = displayValue;
         for (const button of buttons) {
@@ -222,4 +208,3 @@ function operate(operator, firstOperand, secondOperand) {
             break;
     }
 }
-

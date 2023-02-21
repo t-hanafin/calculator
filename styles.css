@@ -57,10 +57,32 @@ body {
     font-family: Helvetica, Arial, sans-serif;
 }
 
+.buttons {
+    box-shadow: 0 1px #999;
+    cursor: pointer;
+    outline: none;
+}
+  
+.buttons:hover {background-color: #868686}
+
+.buttons:active {
+    background-color: #5e5e5e;
+    box-shadow: 0 1px #5e5e5e;
+    transform: translateY(1px);
+}
+
 #divide, #multiply, #subtract, #add {
     background-color: orange;
 }
 
+#divide:hover, #multiply:hover, #subtract:hover, #add:hover {
+    background-color: rgba(255, 166, 0, 0.75);
+}
+
 #equals {
     background-color: orangered;
+}
+
+#equals:hover {
+    background-color: rgba(255, 68, 0, 0.75);
 }

@@ -107,21 +107,24 @@ function zeroZeroPress() {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-
     if (displayValue.toString().includes("e")) {
-        display.style.cssText += "font-size: 30px;padding: 7px;";
-        displayValue = "error";
-        display.textContent = displayValue;
-        for (const button of buttons) {
-            button.disabled = true;
-        }
-        clearButton.disabled = false;
+        error();
     } else if (displayValue.toString().length > 10) {
         display.style.cssText += "font-size: 10px;padding: 18.5px;";
         display.textContent = displayValue
     } else {
         display.textContent = displayValue;
     }
+}
+
+function error() {
+    display.style.cssText += "font-size: 30px;padding: 7px;";
+    displayValue = "error";
+    display.textContent = displayValue;
+    for (const button of buttons) {
+        button.disabled = true;
+    }
+    clearButton.disabled = false;
 }
 
 // Mathematical functions.

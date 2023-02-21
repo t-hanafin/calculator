@@ -50,11 +50,43 @@ function clear() {
 }
 
 function operatorPress(buttonId) {
-    firstOperand = displayValue;
+    if (equalsActive) {
+        displayValue = secondOperand;
+        updateDisplay(displayValue);
+        equalsActive = false;
+    } else if (firstOperand === undefined) {
+        firstOperand = displayValue;
+    } else {
+        secondOperand = displayValue;
+    }
+
+    if (!isNaN(operate(operator, firstOperand, secondOperand))) {
+        operate(operator, firstOperand, secondOperand);
+        displayValue = result;
+        updateDisplay(displayValue);
+        firstOperand = displayValue;
+        operatorActive = true;
+    } else {
+        operatorActive = true;
+    }
     operator = buttonId;
-    operatorActive = true;
-//    equalsActive = false;
 }
+
+/*
+
+    if (operatorActive === false) {
+        firstOperand = displayValue;
+        operator = buttonId;
+        operatorActive = true;
+    } else if (operatorActive === true) {
+        secondOperand = displayValue;
+        operate(operator, firstOperand, secondOperand);
+        operator = buttonId;
+        firstOperand = displayValue;
+    }
+}
+
+*/
 
 function numberPress(buttonId) {
     if (operatorActive === true || displayValue == 0) {
@@ -79,9 +111,13 @@ function equalsPress() {
         equalsActive = true;
         secondOperand = displayValue;
         operate(operator, firstOperand, secondOperand);
+        displayValue = result;
+        updateDisplay(displayValue);
     } else if (equalsActive === true) {
         firstOperand = displayValue;
         operate(operator, firstOperand, secondOperand);
+        displayValue = result;
+        updateDisplay(displayValue);
     }
 }
 
@@ -158,6 +194,23 @@ function divide(firstOperand, secondOperand) {
 function operate(operator, firstOperand, secondOperand) {
     switch(operator) {
         case "add":
+            return result = add(firstOperand, secondOperand);
+            break;
+        case "subtract":
+            return result = subtract(firstOperand, secondOperand);
+            break;
+        case "multiply":
+            return result = multiply(firstOperand, secondOperand);
+            break;
+        case "divide": 
+            return result = divide(firstOperand, secondOperand);
+            break;
+    }
+
+
+/* 
+
+        case "add":
             displayValue = add(firstOperand, secondOperand);
             updateDisplay(displayValue);
             break;
@@ -174,4 +227,13 @@ function operate(operator, firstOperand, secondOperand) {
             updateDisplay(displayValue);
             break;
     }
+
+ */
+
+
+
+
+
+
+
 }

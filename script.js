@@ -5,7 +5,7 @@ let displayValue = 0;
 display.textContent = displayValue;
 var firstOperand = undefined;
 let secondOperand = undefined;
-let operator;
+let operator = "";
 var result = undefined;
 var equalsActive = false;
 var operatorActive = false;
@@ -22,7 +22,9 @@ function buttonPress(buttonId) {
     } else if (buttonId == ".") {
         decimalPress();
     } else if (buttonId == "equals") {
-        equalsPress();
+        if (operator != "") { // This means the = button will do nothing if there is no operator entered. 
+            equalsPress();
+        }
     } else if (buttonId === "+/-") {
         plusMinusPress();
     } else if (buttonId === "%") {
@@ -49,45 +51,6 @@ function clear() {
     }
 }
 
-function operatorPress(buttonId) {
-    if (equalsActive) {
-        displayValue = secondOperand;
-        updateDisplay(displayValue);
-        equalsActive = false;
-    } else if (firstOperand === undefined) {
-        firstOperand = displayValue;
-    } else {
-        secondOperand = displayValue;
-    }
-
-    if (!isNaN(operate(operator, firstOperand, secondOperand))) {
-        operate(operator, firstOperand, secondOperand);
-        displayValue = result;
-        updateDisplay(displayValue);
-        firstOperand = displayValue;
-        operatorActive = true;
-    } else {
-        operatorActive = true;
-    }
-    operator = buttonId;
-}
-
-/*
-
-    if (operatorActive === false) {
-        firstOperand = displayValue;
-        operator = buttonId;
-        operatorActive = true;
-    } else if (operatorActive === true) {
-        secondOperand = displayValue;
-        operate(operator, firstOperand, secondOperand);
-        operator = buttonId;
-        firstOperand = displayValue;
-    }
-}
-
-*/
-
 function numberPress(buttonId) {
     if (operatorActive === true || displayValue == 0) {
         displayValue = buttonId;
@@ -102,21 +65,6 @@ function numberPress(buttonId) {
 function decimalPress() {
     if (!displayValue.toString().includes(".")) {
         displayValue += ".";
-        updateDisplay(displayValue);
-    }
-}
-
-function equalsPress() {
-    if (equalsActive === false) {
-        equalsActive = true;
-        secondOperand = displayValue;
-        operate(operator, firstOperand, secondOperand);
-        displayValue = result;
-        updateDisplay(displayValue);
-    } else if (equalsActive === true) {
-        firstOperand = displayValue;
-        operate(operator, firstOperand, secondOperand);
-        displayValue = result;
         updateDisplay(displayValue);
     }
 }
@@ -138,6 +86,53 @@ function percentPress() {
 function zeroZeroPress() {
     buttonPress(0);
     buttonPress(0);
+}
+
+// The equals button has two modes: 
+// In the first, the equals button performs an operation on the two operands entered. 
+// In the second, the equals button continues the last operation using the last operand entered and the previous result. 
+
+function equalsPress() {
+    if ((equalsActive === false) && (operator != "")) {
+        equalsActive = true;
+        secondOperand = displayValue;
+        operate(operator, firstOperand, secondOperand);
+        displayValue = result;
+        updateDisplay(displayValue);
+    } else if ((equalsActive === true) && (operator != "")) {
+        firstOperand = displayValue;
+        operate(operator, firstOperand, secondOperand);
+        displayValue = result;
+        updateDisplay(displayValue);
+    }
+}
+
+// The operator buttons have three modes: the first time one is pressed, it writes the displayed value to the firstOperand variable.
+// The second mode, if there hasn't been a second number entered, it performs the given operation on the one number entered (i.e. 1 ++ will result in 2).
+// The third mode allows for continuous operations with a running total. 
+
+function operatorPress(buttonId) {
+    if (equalsActive) {
+        displayValue = secondOperand;
+        updateDisplay(displayValue);
+        equalsActive = false;
+    } else if (firstOperand === undefined) {
+        firstOperand = displayValue;
+    } else {
+        secondOperand = displayValue;
+    }
+    if (operatorActive) {
+        updateDisplay(operate(operator, firstOperand, secondOperand)); // Performs an operation on the second operator-button press if there's only been one operand entered. 
+    } else if (!isNaN(operate(operator, firstOperand, secondOperand))) { // Does the math if there are two operands. 
+        operate(operator, firstOperand, secondOperand);
+        displayValue = result;
+        updateDisplay(displayValue);
+        firstOperand = displayValue;
+        operatorActive = true;
+    } else { // Sets the operator to active if there's only one operand. 
+        operatorActive = true;
+    }
+    operator = buttonId;
 }
 
 // Updates display, shows error if the value is too long.
@@ -206,34 +201,4 @@ function operate(operator, firstOperand, secondOperand) {
             return result = divide(firstOperand, secondOperand);
             break;
     }
-
-
-/* 
-
-        case "add":
-            displayValue = add(firstOperand, secondOperand);
-            updateDisplay(displayValue);
-            break;
-        case "subtract":
-            displayValue = subtract(firstOperand, secondOperand);
-            updateDisplay(displayValue);
-            break;
-        case "multiply":
-            displayValue = multiply(firstOperand, secondOperand);
-            updateDisplay(displayValue);
-            break;
-        case "divide": 
-            displayValue = divide(firstOperand, secondOperand);
-            updateDisplay(displayValue);
-            break;
-    }
-
- */
-
-
-
-
-
-
-
 }

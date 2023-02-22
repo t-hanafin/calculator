@@ -61,7 +61,12 @@ function clear() {
 }
 
 function numberPress(buttonId) {
-    if (operatorActive == true || displayValue === 0 || equalsActive == true) {
+    if (displayValue == 0 || displayValue === 0) {
+        displayValue = buttonId;
+        updateDisplay(displayValue);
+        operatorActive = false;
+        equalsActive = false;
+    } else if (operatorActive == true || equalsActive == true) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorActive = false;

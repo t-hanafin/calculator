@@ -64,12 +64,36 @@ function clear() {
 }
 
 function decimalPress() {
-    console.log(displayValue);
-    if (!displayValue.toString().includes('.')) {
+    if (displayValue == 0) {
+        displayValue += '.';
+        updateDisplay(displayValue);
+    } else if (equalsActive || operatorActive) {
+        displayValue = '0.';
+        updateDisplay(displayValue);
+        equalsActive = false;
+        operatorActive = false;
+    } else if (displayValue != 0 && !displayValue.toString().includes('.')) {
         displayValue += '.';
         updateDisplay(displayValue);
     }
 }
+
+
+
+/*
+    if (!displayValue.toString().includes('.')) {
+        displayValue += '.';
+        updateDisplay(displayValue);
+        console.log(displayValue);
+     } else if (displayValue == 0 || (equalsActive == true || operatorActive == true)) {
+        displayValue += '.';
+        updateDisplay(displayValue);
+    console.log(displayValue);
+}
+
+
+*/
+
 
 function plusMinusPress() {
     displayValue *= -1;
@@ -95,7 +119,7 @@ function backspacePress() {
 }
 
 function numberPress(buttonId) {
-    if (displayValue == 0 || displayValue === 0) {
+    if (displayValue === 0) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorActive = false;
@@ -173,6 +197,9 @@ function updateDisplay(displayValue) {
     displayValue = parseFloat(displayValue);
     if (Number.isInteger(displayValue) && displayValue.toString().length <= 12) {
         display.textContent = displayValue;
+    } else if (!Number.isInteger(displayValue)) {
+        displayValue = (Math.round(displayValue * 10000000000) / 10000000000);
+        display.textContent = displayValue;
     } else if ((displayValue.toString().length) > 12) {
         displayValue = "error";
         display.textContent = displayValue;
@@ -184,9 +211,6 @@ function updateDisplay(displayValue) {
         }
         clearButton.disabled = false;            
         clearButton.textContent = "ce";
-    } else {
-        displayValue = (Math.round(displayValue * 10000) / 10000);
-        display.textContent = displayValue;
     }
 }
 
@@ -236,7 +260,8 @@ function operate(operator, firstOperand, secondOperand) {
     }
 }
 
-// Event Listener for keyboard button press
+// Keypress event listener.
+
 document.addEventListener('keydown', (event) => {
     let keyboardOperator = {
 		'+': 'add',
@@ -246,8 +271,7 @@ document.addEventListener('keydown', (event) => {
         'X': 'multiply',
 		'*': 'multiply'
 	}
-
-    if(!isNaN(event.key) && event.key !== ' '){
+    if(!isNaN(event.key)){
         buttonPress(event.key);
 	}
     if (event.key == 'Backspace') {

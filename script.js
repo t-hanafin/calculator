@@ -60,6 +60,36 @@ function clear() {
     }
 }
 
+function decimalPress() {
+    if (!displayValue.toString().includes('.')) {
+        displayValue += '.';
+        updateDisplay(displayValue);
+    }
+}
+
+function plusMinusPress() {
+    displayValue *= -1;
+    updateDisplay(displayValue);
+}
+
+function zeroZeroPress() {
+    buttonPress(0);
+    buttonPress(0);
+}
+
+function backspacePress() {
+    if (displayValue == 0) {
+        displayValue = 0;
+        updateDisplay(displayValue);
+    } else if (displayValue.length <= 1) {
+        displayValue = 0;
+        updateDisplay(displayValue);
+    } else if (operatorActive == false && equalsActive == false) {
+        displayValue = displayValue.substring(0, (displayValue.length - 1));
+        updateDisplay(displayValue);
+    }
+}
+
 function numberPress(buttonId) {
     if (displayValue == 0 || displayValue === 0) {
         displayValue = buttonId;
@@ -75,36 +105,6 @@ function numberPress(buttonId) {
         displayValue += buttonId;
         updateDisplay(displayValue);
     }
-}
-
-function decimalPress() {
-    if (!displayValue.toString().includes('.')) {
-        displayValue += '.';
-        updateDisplay(displayValue);
-    }
-}
-
-function plusMinusPress() {
-    displayValue *= -1;
-    updateDisplay(displayValue);
-}
-
-function backspacePress() {
-    if (displayValue == 0) {
-        displayValue = 0;
-        updateDisplay(displayValue);
-    } else if (displayValue.length <= 1) {
-        displayValue = 0;
-        updateDisplay(displayValue);
-    } else {
-        displayValue = displayValue.substring(0, (displayValue.length - 1));
-        updateDisplay(displayValue);
-    }
-}
-
-function zeroZeroPress() {
-    buttonPress(0);
-    buttonPress(0);
 }
 
 // The equals button has two modes: 
@@ -148,7 +148,10 @@ function operatorPress(buttonId) {
         // if there's only been one operand entered. 
         updateDisplay(operate(operator, firstOperand, secondOperand)); 
     } else if (!isNaN(operate(operator, firstOperand, secondOperand))) { 
-        // Does the math if there are two operands. 
+        // Does the math if there are two operands. Tests for this by 
+        // trying to call operate using both operands. If one is
+        // undefined (i.e. in the initial state or after pressing clear)
+        // then it'll return NaN.
         operate(operator, firstOperand, secondOperand);
         displayValue = result;
         updateDisplay(displayValue);
@@ -163,18 +166,18 @@ function operatorPress(buttonId) {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-    displayValue = displayValue.toString();
-    if (displayValue.includes('+') || displayValue.length > 123452343) {
-        displayValue = 'error';
+
+    displayValue = parseFloat(displayValue);
+//    console.log(Number.isInteger(displayValue));
+    if (Number.isInteger(displayValue) && displayValue.toString.length <= 12) {
         display.textContent = displayValue;
-        for (const button of buttons) {
-            button.disabled = true;
-        }
-        clearButton.disabled = false;
+    } else if (displayValue.toString.length > 12) {
+        displayValue = displayValue.toExponential(2);
+        display.textContent = displayValue;
     } else {
+        displayValue = displayValue.toFixed(3);
         display.textContent = displayValue;
     }
-    displayValue = parseFloat(displayValue);
 }
 
 // Mathematical functions.

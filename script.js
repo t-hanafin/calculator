@@ -37,7 +37,7 @@ function buttonPress(buttonId) {
         equalsPress();
     } else if (buttonId === '+/-') {
         plusMinusPress();
-    } else if (buttonId === 'backspace') {
+    } else if (buttonId == 'backspace') {
         backspacePress();
     } else if (parseInt(buttonId) >= 0 && parseInt(buttonId) < 10) {
         numberPress(buttonId);
@@ -90,6 +90,16 @@ function plusMinusPress() {
 }
 
 function backspacePress() {
+    if (displayValue == 0) {
+        displayValue = 0;
+        updateDisplay(displayValue);
+    } else if (displayValue.length <= 1) {
+        displayValue = 0;
+        updateDisplay(displayValue);
+    } else {
+        displayValue = displayValue.substring(0, (displayValue.length - 1));
+        updateDisplay(displayValue);
+    }
 }
 
 function zeroZeroPress() {

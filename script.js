@@ -37,8 +37,8 @@ function buttonPress(buttonId) {
         equalsPress();
     } else if (buttonId === '+/-') {
         plusMinusPress();
-    } else if (buttonId === '%') {
-        percentPress();
+    } else if (buttonId === 'backspace') {
+        backspacePress();
     } else if (parseInt(buttonId) >= 0 && parseInt(buttonId) < 10) {
         numberPress(buttonId);
     }
@@ -89,9 +89,7 @@ function plusMinusPress() {
     updateDisplay(displayValue);
 }
 
-function percentPress() {
-    displayValue *= 0.01;
-    updateDisplay(displayValue);
+function backspacePress() {
 }
 
 function zeroZeroPress() {

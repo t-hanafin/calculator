@@ -175,7 +175,7 @@ function updateDisplay(displayValue) {
         displayValue = displayValue.toExponential(2);
         display.textContent = displayValue;
     } else {
-        displayValue = displayValue.toFixed(3);
+        displayValue = (Math.round(displayValue * 10000) / 10000);
         display.textContent = displayValue;
     }
 }

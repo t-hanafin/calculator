@@ -7,6 +7,7 @@ var firstOperand = undefined;
 let secondOperand = undefined;
 let operator = '';
 var result = undefined;
+let buttonId = ' ';
 var equalsActive = false; // Changes the mode of the equals button.
 var operatorActive = false; // Changes the mode of the operator buttons. 
 
@@ -26,15 +27,15 @@ function buttonPress(buttonId) {
     } else if (buttonId == 'clear') { 
         clear();
     } else if (
-            buttonId == 'add' || 
-            buttonId === 'subtract' || 
-            buttonId === 'divide' || 
-            buttonId === 'multiply'
+            buttonId == 'add' || buttonId === "+" ||
+            buttonId === 'subtract' || buttonId === "-" ||
+            buttonId === 'divide' || buttonId === "/" ||
+            buttonId === 'multiply' || buttonId === "*" || buttonId === "x" || buttonId === "X"
             ) { 
         operatorPress(buttonId);
     } else if (buttonId == '.') {
         decimalPress();
-    } else if (buttonId == 'equals') {
+    } else if (buttonId == 'equals' || buttonId === 'equals') {
         equalsPress();
     } else if (buttonId === '+/-') {
         plusMinusPress();
@@ -63,6 +64,7 @@ function clear() {
 }
 
 function decimalPress() {
+    console.log(displayValue);
     if (!displayValue.toString().includes('.')) {
         displayValue += '.';
         updateDisplay(displayValue);
@@ -233,3 +235,38 @@ function operate(operator, firstOperand, secondOperand) {
             break;
     }
 }
+
+// Event Listener for keyboard button press
+document.addEventListener('keydown', (event) => {
+    let keyboardOperator = {
+		'+': 'add',
+		'-': 'subtract',
+		'/': 'divide',
+		'x': 'multiply',
+        'X': 'multiply',
+		'*': 'multiply'
+	}
+
+    if(!isNaN(event.key) && event.key !== ' '){
+        buttonPress(event.key);
+	}
+    if (event.key == 'Backspace') {
+        buttonPress('backspace');
+	}
+    if (event.key == 'c' || event.key == "C" || event.key == "Escape") {
+        buttonPress('clear');
+    }
+	if (event.key === '=') {
+		buttonPress('equals');	
+	}
+    // works but i'd like to add enter-key function to it too... 
+    // for some reason the enter key also passes the secondOperand back
+    // to displayValue. no idea why. doesn't happen with =.
+
+	if (event.key === '.') {
+		buttonPress(event.key);	
+	}
+    if (['+', '-', '/', 'x', 'X', '*'].includes(event.key)) {
+        buttonPress(keyboardOperator[event.key]);
+    }
+});

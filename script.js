@@ -253,16 +253,13 @@ document.addEventListener('keydown', (event) => {
     if (event.key == 'Backspace') {
         buttonPress('backspace');
 	}
-    if (event.key == 'c' || event.key == "C" || event.key == "Escape") {
+    if (event.key == 'c' || event.key == 'C' || event.key == 'Escape') {
         buttonPress('clear');
     }
-	if (event.key === '=') {
-		buttonPress('equals');	
+	if (event.key === '=' || event.key === 'Enter') {
+        event.key = '=';
+        buttonPress('equals');	
 	}
-    // works but i'd like to add enter-key function to it too... 
-    // for some reason the enter key also passes the secondOperand back
-    // to displayValue. no idea why. doesn't happen with =.
-
 	if (event.key === '.') {
 		buttonPress(event.key);	
 	}

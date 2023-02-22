@@ -120,9 +120,9 @@ function equalsPress() {
 }
 
 // The operator buttons have three modes: the first time one is pressed, it 
-// writes the displayed value to the firstOperand variable. The second mode, 
-// if there hasn't been a second number entered, it performs the given
-// operation on the one number entered (i.e. 1 ++ will result in 2).
+// writes the displayed value to the firstOperand variable. In the second mode, 
+// if there is no secondOperand value then the operator button performs 
+// the given operation just using firstOperand (i.e. 1 ++ will result in 2).
 // The third mode allows for continuous operations with a running total. 
 
 function operatorPress(buttonId) {
@@ -136,7 +136,7 @@ function operatorPress(buttonId) {
         secondOperand = displayValue;
     }
     if (operatorActive) {
-        // Performs an operation on the second operator-button press 
+        // Performs an operation on the second operator-button-press 
         // if there's only been one operand entered. 
         updateDisplay(operate(operator, firstOperand, secondOperand)); 
     } else if (!isNaN(operate(operator, firstOperand, secondOperand))) { 

@@ -59,6 +59,7 @@ function clear() {
     for (const button of buttons) { // This recovers from error.
         button.disabled = false;
     }
+    clearButton.textContent = "c";
 }
 
 function decimalPress() {
@@ -168,11 +169,20 @@ function operatorPress(buttonId) {
 
 function updateDisplay(displayValue) {
     displayValue = parseFloat(displayValue);
-    if (Number.isInteger(displayValue) && displayValue.toString.length <= 12) {
+    console.log(displayValue.toString().length);
+    if (Number.isInteger(displayValue) && displayValue.toString().length <= 12) {
         display.textContent = displayValue;
-    } else if (displayValue.toString.length > 12) {
-        displayValue = displayValue.toExponential(2);
+    } else if ((displayValue.toString().length) > 12) {
+        displayValue = "error";
         display.textContent = displayValue;
+        // This puts the calculator into error mode and stops input. It also
+        // changes the clear button into a clear-error button (does not change)
+        // the HTML text on the clear button though.
+        for (const button of buttons) { 
+            button.disabled = true;     
+        }
+        clearButton.disabled = false;            
+        clearButton.textContent = "ce";
     } else {
         displayValue = (Math.round(displayValue * 10000) / 10000);
         display.textContent = displayValue;

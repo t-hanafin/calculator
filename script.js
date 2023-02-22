@@ -7,8 +7,8 @@ var firstOperand = undefined;
 let secondOperand = undefined;
 let operator = '';
 var result = undefined;
-var equalsActive = false;
-var operatorActive = false;
+var equalsActive = false; // Changes the mode of the equals button.
+var operatorActive = false; // Changes the mode of the operator buttons. 
 
 // Listens for click events on the HTML buttons, 
 // calls subsequent function based on buttonID.
@@ -29,7 +29,8 @@ function buttonPress(buttonId) {
             buttonId == 'add' || 
             buttonId === 'subtract' || 
             buttonId === 'divide' || 
-            buttonId === 'multiply') { 
+            buttonId === 'multiply'
+            ) { 
         operatorPress(buttonId);
     } else if (buttonId == '.') {
         decimalPress();
@@ -166,9 +167,7 @@ function operatorPress(buttonId) {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay(displayValue) {
-
     displayValue = parseFloat(displayValue);
-//    console.log(Number.isInteger(displayValue));
     if (Number.isInteger(displayValue) && displayValue.toString.length <= 12) {
         display.textContent = displayValue;
     } else if (displayValue.toString.length > 12) {

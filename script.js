@@ -169,7 +169,6 @@ function operatorPress(buttonId) {
 
 function updateDisplay(displayValue) {
     displayValue = parseFloat(displayValue);
-    console.log(displayValue.toString().length);
     if (Number.isInteger(displayValue) && displayValue.toString().length <= 12) {
         display.textContent = displayValue;
     } else if ((displayValue.toString().length) > 12) {

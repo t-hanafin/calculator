@@ -78,23 +78,6 @@ function decimalPress() {
     }
 }
 
-
-
-/*
-    if (!displayValue.toString().includes('.')) {
-        displayValue += '.';
-        updateDisplay(displayValue);
-        console.log(displayValue);
-     } else if (displayValue == 0 || (equalsActive == true || operatorActive == true)) {
-        displayValue += '.';
-        updateDisplay(displayValue);
-    console.log(displayValue);
-}
-
-
-*/
-
-
 function plusMinusPress() {
     displayValue *= -1;
     updateDisplay(displayValue);

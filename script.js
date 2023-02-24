@@ -42,8 +42,10 @@ function buttonPress(buttonId) {
         plusMinusPress();
     } else if (buttonId == 'backspace') {
         backspacePress(buttonId);
-    } else if (parseInt(buttonId) >= 0 && parseInt(buttonId) < 10) {
+    } else if (parseInt(buttonId) > 0 && parseInt(buttonId) < 10) {
         numberPress(buttonId);
+    } else if (buttonId == "zero") {
+        numberPress(0);
     }
 }
 

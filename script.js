@@ -96,6 +96,9 @@ function backspacePress(buttonId) {
     } else if (displayValue.length <= 1) {
         displayValue = 0;
         updateDisplay(displayValue);
+    } else if (displayValue >= -9 && displayValue <= -1) {
+        displayValue = 0;
+        updateDisplay(displayValue);
     } else if (operatorActive == false && equalsActive == false) {
         displayValue = displayValue.toString()
         displayValue = displayValue.substring(0, (displayValue.length - 1));

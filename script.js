@@ -180,7 +180,7 @@ function operatorPress(buttonId) {
 
 function updateDisplay(displayValue) {
     displayValue = parseFloat(displayValue);
-    if (Number.isInteger(displayValue) && displayValue.toString().length <= 12) {
+    if (Number.isInteger(displayValue) && displayValue.toString().length <= 9) {
         display.textContent = displayValue;
     } else if (!Number.isInteger(displayValue)) {
         displayValue = (Math.round(displayValue * 100000) / 100000);

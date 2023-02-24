@@ -15,9 +15,10 @@ var operatorActive = false; // Changes the mode of the operator buttons.
 // calls subsequent function based on buttonID.
 
 buttons.forEach((button) => {
-    button.addEventListener('click', (e) => {
+    button.addEventListener('mouseup', (e) => {
         buttonId = e.target.id;
         buttonPress(buttonId);
+        console.log(buttonId);
     })
 })
 
@@ -40,7 +41,7 @@ function buttonPress(buttonId) {
     } else if (buttonId === '+/-') {
         plusMinusPress();
     } else if (buttonId == 'backspace') {
-        backspacePress();
+        backspacePress(buttonId);
     } else if (parseInt(buttonId) >= 0 && parseInt(buttonId) < 10) {
         numberPress(buttonId);
     }
@@ -88,7 +89,7 @@ function zeroZeroPress() {
     buttonPress(0);
 }
 
-function backspacePress() {
+function backspacePress(buttonId) {
     if (displayValue == 0) {
         displayValue = 0;
         updateDisplay(displayValue);
@@ -96,6 +97,7 @@ function backspacePress() {
         displayValue = 0;
         updateDisplay(displayValue);
     } else if (operatorActive == false && equalsActive == false) {
+        displayValue = displayValue.toString()
         displayValue = displayValue.substring(0, (displayValue.length - 1));
         updateDisplay(displayValue);
     }

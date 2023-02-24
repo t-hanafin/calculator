@@ -183,7 +183,7 @@ function updateDisplay(displayValue) {
     } else if (!Number.isInteger(displayValue)) {
         displayValue = (Math.round(displayValue * 100000) / 100000);
         display.textContent = displayValue;
-    } else if ((displayValue.toString().length) > 12) {
+    } else if ((displayValue.toString().length) > 9) {
         displayValue = "error";
         display.textContent = displayValue;
         // This puts the calculator into error mode and stops input. It also

@@ -112,7 +112,7 @@ function numberPress(buttonId) {
         updateDisplay(displayValue);
         operatorActive = false;
         equalsActive = false;
-    } else if (operatorActive === false && displayValue.length < 11) {
+    } else if (operatorActive === false && displayValue.length < 9) {
         displayValue += buttonId;
         updateDisplay(displayValue);
     }

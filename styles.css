@@ -37,12 +37,14 @@ body {
 
 .buttons {
     display: flex;
+    align-items: flex-end;
     min-width: 66px;
     height: 66px;
     padding: 10px;
+    flex-grow: 1;
     border: 1px solid gray;
     background-color: rgb(175, 175, 175);
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     box-shadow: 0 1px #999;
     outline: none;
     cursor: pointer;
@@ -53,6 +55,11 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+
+#backspace-icon {
+    font-size: 1.25rem;
+}
+
   
 .buttons:hover {
     background-color: #868686

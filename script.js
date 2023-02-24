@@ -181,7 +181,7 @@ function updateDisplay(displayValue) {
     if (Number.isInteger(displayValue) && displayValue.toString().length <= 12) {
         display.textContent = displayValue;
     } else if (!Number.isInteger(displayValue)) {
-        displayValue = (Math.round(displayValue * 10000000000) / 10000000000);
+        displayValue = (Math.round(displayValue * 100000) / 100000);
         display.textContent = displayValue;
     } else if ((displayValue.toString().length) > 12) {
         displayValue = "error";

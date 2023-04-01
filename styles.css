@@ -31,7 +31,7 @@ body {
     justify-content: flex-end;
     align-items: flex-end;
     width: 100%;
-    min-height: 55px;
+    min-height: 60px;
     background-color: rgb(191, 191, 191);
     font-size: 3rem;
     padding: 10px;
@@ -46,7 +46,7 @@ body {
     flex-grow: 0;
     border: 1px solid gray;
     background-color: rgb(175, 175, 175);
-    font-size: 1.5rem;
+    font-size: 1.6666rem;
     box-shadow: 0 1px #999;
     outline: none;
     cursor: pointer;

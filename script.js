@@ -10,7 +10,6 @@ var result = undefined;
 var buttonId = ' ';
 var equalsActive = false; // Changes the mode of the equals button.
 var operatorActive = false; // Changes the mode of the operator buttons.
-var isDecimalAllowed = true; 
 
 // Listens for click events on the HTML buttons, 
 // calls subsequent function based on buttonID.
@@ -61,12 +60,7 @@ function buttonPress(buttonId) {
 
 function clear() {
     if (displayValue === 'error') {     // This recovers from error.
-        for (const button of buttons) { 
-            button.disabled = false;
-        }
-        clearButton.textContent = "c";
-        displayValue = 0;
-        updateDisplay(displayValue);
+        clearError();
     } else if (displayValue != 0) {
         displayValue = 0;
         updateDisplay(displayValue);
@@ -77,18 +71,25 @@ function clear() {
     result = undefined;
     equalsActive = false;
     operatorActive = false;
-    isDecimalAllowed = true;
     display.style.setProperty('font-size', '3rem');
+}
+
+function clearError() {
+    for (const button of buttons) { 
+        button.disabled = false;
+    }
+    clearButton.textContent = "c";
+    displayValue = 0;
+    updateDisplay(displayValue);
 }
 
 function decimalPress() {
     if (operatorActive) {
         updateDisplay(displayValue = "0" + buttonId);
         operatorActive = false;
-    } else if (isDecimalAllowed) {
+    } else if (!displayValue.toString().includes('.')) {
         displayValue += '.';
         updateDisplay(displayValue);        
-        isDecimalAllowed = false;
     }
 }
 
@@ -173,7 +174,6 @@ function operatorPress(buttonId) {
         // Performs an operation on the second operator-button-press 
         // if there's only been one operand entered. 
         updateDisplay(operate(operator, firstOperand, secondOperand)); 
-//    } else if (!isNaN(operate(operator, firstOperand, secondOperand))) { 
     } else if (!isNaN(firstOperand) && !isNaN(secondOperand)) { 
         operate(operator, firstOperand, secondOperand);
         displayValue = result;
@@ -191,8 +191,7 @@ function operatorPress(buttonId) {
 function updateDisplay() {
     if (displayValue.toString().length <= 9) {
         display.textContent = displayValue;
-    } else if (displayValue.toString().length > 15) {
-        displayValue = 'error';
+    } else if (displayValue.toString().length > 20) {
         display.textContent = displayValue;
         // This puts the calculator into error mode and stops input. It also
         // changes the clear button into a clear-error button (does not change)

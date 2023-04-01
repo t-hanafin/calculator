@@ -29,7 +29,9 @@ body {
 .display {
     display: flex;
     justify-content: flex-end;
+    align-items: flex-end;
     width: 100%;
+    min-height: 55px;
     background-color: rgb(191, 191, 191);
     font-size: 3rem;
     padding: 10px;

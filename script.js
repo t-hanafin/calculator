@@ -78,6 +78,7 @@ function clear() {
     equalsActive = false;
     operatorActive = false;
     isDecimalAllowed = true;
+    display.style.setProperty('font-size', '3rem');
 }
 
 function decimalPress() {
@@ -123,7 +124,7 @@ function numberPress(buttonId) {
         updateDisplay(displayValue = buttonId);
         operatorActive = false;
         equalsActive = false;
-    } else if (operatorActive === false && displayValue.length < 9) {
+    } else if (operatorActive === false && displayValue.length < 15) {
         updateDisplay(displayValue += buttonId);
     }
 }
@@ -190,7 +191,7 @@ function operatorPress(buttonId) {
 function updateDisplay() {
     if (displayValue.toString().length <= 9) {
         display.textContent = displayValue;
-    } else if (displayValue.toString().length > 9) {
+    } else if (displayValue.toString().length > 15) {
         displayValue = 'error';
         display.textContent = displayValue;
         // This puts the calculator into error mode and stops input. It also
@@ -201,6 +202,9 @@ function updateDisplay() {
         }
         clearButton.disabled = false;            
         clearButton.textContent = "ce";
+    } else if (displayValue.toString().length > 9) {
+        display.style.setProperty('font-size', '1.9rem');
+        display.textContent = displayValue;
     }
 }
 

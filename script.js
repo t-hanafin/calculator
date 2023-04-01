@@ -1,15 +1,16 @@
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('.buttons');
 const clearButton = document.getElementById('clear');
-let displayValue = 0;
-display.textContent = displayValue;
+var displayValue = 0;
+updateDisplay(displayValue);
 var firstOperand = undefined;
-let secondOperand = undefined;
-let operator = '';
+var secondOperand = undefined;
+var operator = '';
 var result = undefined;
-let buttonId = ' ';
+var buttonId = ' ';
 var equalsActive = false; // Changes the mode of the equals button.
-var operatorActive = false; // Changes the mode of the operator buttons. 
+var operatorActive = false; // Changes the mode of the operator buttons.
+var isDecimalAllowed = true; 
 
 // Listens for click events on the HTML buttons, 
 // calls subsequent function based on buttonID.
@@ -18,7 +19,6 @@ buttons.forEach((button) => {
     button.addEventListener('mouseup', (e) => {
         buttonId = e.target.id;
         buttonPress(buttonId);
-        console.log(buttonId);
     })
 })
 
@@ -28,7 +28,7 @@ function buttonPress(buttonId) {
     } else if (buttonId == 'clear') { 
         clear();
     } else if (
-            buttonId == 'add' || buttonId === "+" ||
+            buttonId === 'add' || buttonId === "+" ||
             buttonId === 'subtract' || buttonId === "-" ||
             buttonId === 'divide' || buttonId === "/" ||
             buttonId === 'multiply' || buttonId === "*" || buttonId === "x" || buttonId === "X"
@@ -52,38 +52,44 @@ function buttonPress(buttonId) {
 // Button-press functions.
 
 function clear() {
-    displayValue = 0;
-    updateDisplay(displayValue);
+    if (displayValue === 'error') {
+        for (const button of buttons) { // This recovers from error.
+            button.disabled = false;
+        }
+        clearButton.textContent = "c";
+        displayValue = 0;
+        updateDisplay(displayValue);
+    } else if (displayValue != 0) {
+        displayValue = 0;
+        updateDisplay(displayValue);
+    }
     firstOperand = undefined;
     secondOperand = undefined;
     operator = '';
     result = undefined;
     equalsActive = false;
     operatorActive = false;
-    for (const button of buttons) { // This recovers from error.
-        button.disabled = false;
-    }
-    clearButton.textContent = "c";
+    isDecimalAllowed = true;
 }
 
 function decimalPress() {
-    if (displayValue == 0) {
+    if (isDecimalAllowed) {
         displayValue += '.';
-        updateDisplay(displayValue);
-    } else if (equalsActive || operatorActive) {
-        displayValue = '0.';
-        updateDisplay(displayValue);
-        equalsActive = false;
-        operatorActive = false;
-    } else if (displayValue != 0 && !displayValue.toString().includes('.')) {
-        displayValue += '.';
-        updateDisplay(displayValue);
+        updateDisplay(displayValue);        
+        isDecimalAllowed = false;
     }
 }
 
 function plusMinusPress() {
-    displayValue *= -1;
-    updateDisplay(displayValue);
+    if (equalsActive) {
+        var plusMinusHolder = displayValue * -1;
+        clear();
+        displayValue = plusMinusHolder;
+        updateDisplay(displayValue);
+    } else {
+        displayValue *= -1;
+        updateDisplay(displayValue);
+    }
 }
 
 function zeroZeroPress() {
@@ -110,17 +116,16 @@ function backspacePress(buttonId) {
 
 function numberPress(buttonId) {
     if (displayValue === 0) {
+        clear();
         displayValue = buttonId;
         updateDisplay(displayValue);
-        operatorActive = false;
-        equalsActive = false;
     } else if (operatorActive == true || equalsActive == true) {
         displayValue = buttonId;
         updateDisplay(displayValue);
         operatorActive = false;
         equalsActive = false;
     } else if (operatorActive === false && displayValue.length < 9) {
-        displayValue += buttonId;
+        displayValue += `${buttonId}`;
         updateDisplay(displayValue);
     }
 }
@@ -131,14 +136,18 @@ function numberPress(buttonId) {
 // last operation using the last operand entered and the previous result. 
 
 function equalsPress() {
-    if (equalsActive == false && operator != '') {
+    if (equalsActive === false && operator != '') {
         equalsActive = true;
         secondOperand = displayValue;
         operate(operator, firstOperand, secondOperand);
         displayValue = result;
         updateDisplay(displayValue);
-    } else if (equalsActive == true && operator != '') {
+    } else if (equalsActive === true && operator != '') {
         firstOperand = displayValue;
+        operate(operator, firstOperand, secondOperand);
+        displayValue = result;
+        updateDisplay(displayValue);
+    } else if (operator != '' && (!isNaN(firstOperand) && !isNaN(secondOperand))) {
         operate(operator, firstOperand, secondOperand);
         displayValue = result;
         updateDisplay(displayValue);
@@ -165,11 +174,8 @@ function operatorPress(buttonId) {
         // Performs an operation on the second operator-button-press 
         // if there's only been one operand entered. 
         updateDisplay(operate(operator, firstOperand, secondOperand)); 
-    } else if (!isNaN(operate(operator, firstOperand, secondOperand))) { 
-        // Does the math if there are two operands. Tests for this by 
-        // trying to call operate using both operands. If one is
-        // undefined (i.e. in the initial state or after pressing clear)
-        // then it'll return NaN.
+//    } else if (!isNaN(operate(operator, firstOperand, secondOperand))) { 
+    } else if (!isNaN(firstOperand) && !isNaN(secondOperand)) { 
         operate(operator, firstOperand, secondOperand);
         displayValue = result;
         updateDisplay(displayValue);
@@ -183,15 +189,11 @@ function operatorPress(buttonId) {
 
 // Updates display, shows error if the value is too long.
 
-function updateDisplay(displayValue) {
-    displayValue = parseFloat(displayValue);
-    if (Number.isInteger(displayValue) && displayValue.toString().length <= 9) {
+function updateDisplay() {
+    if (displayValue.toString().length <= 9) {
         display.textContent = displayValue;
-    } else if (!Number.isInteger(displayValue)) {
-        displayValue = (Math.round(displayValue * 100000) / 100000);
-        display.textContent = displayValue;
-    } else if ((displayValue.toString().length) > 9) {
-        displayValue = "error";
+    } else if (displayValue.toString().length > 9) {
+        displayValue = 'error';
         display.textContent = displayValue;
         // This puts the calculator into error mode and stops input. It also
         // changes the clear button into a clear-error button (does not change)

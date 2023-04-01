@@ -23,37 +23,45 @@ buttons.forEach((button) => {
 })
 
 function buttonPress(buttonId) {
-    if (buttonId == 'zerozero') {
-        zeroZeroPress();
-    } else if (buttonId == 'clear') { 
-        clear();
-    } else if (
-            buttonId === 'add' || buttonId === "+" ||
-            buttonId === 'subtract' || buttonId === "-" ||
-            buttonId === 'divide' || buttonId === "/" ||
-            buttonId === 'multiply' || buttonId === "*" || buttonId === "x" || buttonId === "X"
-            ) { 
-        operatorPress(buttonId);
-    } else if (buttonId == '.') {
-        decimalPress();
-    } else if (buttonId == 'equals' || buttonId === 'equals') {
-        equalsPress();
-    } else if (buttonId === '+/-') {
-        plusMinusPress();
-    } else if (buttonId == 'backspace') {
-        backspacePress(buttonId);
-    } else if (parseInt(buttonId) > 0 && parseInt(buttonId) < 10) {
-        numberPress(buttonId);
-    } else if (buttonId == "zero") {
-        numberPress(0);
+    switch (buttonId) {
+        case 'clear':
+            clear();
+            break;
+        case '.':
+            decimalPress();
+            break;
+        case 'equals':
+            equalsPress();
+            break;
+        case '+/-':
+            plusMinusPress();
+            break;
+        case 'backspace':
+            backspacePress(buttonId);
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            numberPress(buttonId);
+            break;
+        case 'zero':
+            numberPress(0);
+            break;
+        default:
+            operatorPress(buttonId);
+            break;
     }
 }
 
-// Button-press functions.
-
 function clear() {
-    if (displayValue === 'error') {
-        for (const button of buttons) { // This recovers from error.
+    if (displayValue === 'error') {     // This recovers from error.
+        for (const button of buttons) { 
             button.disabled = false;
         }
         clearButton.textContent = "c";
@@ -87,8 +95,7 @@ function plusMinusPress() {
         displayValue = plusMinusHolder;
         updateDisplay(displayValue);
     } else {
-        displayValue *= -1;
-        updateDisplay(displayValue);
+        updateDisplay(displayValue *= -1);
     }
 }
 
@@ -99,17 +106,14 @@ function zeroZeroPress() {
 
 function backspacePress(buttonId) {
     if (displayValue == 0) {
-        displayValue = 0;
-        updateDisplay(displayValue);
+        updateDisplay(displayValue = 0);
     } else if (displayValue.length <= 1) {
-        displayValue = 0;
-        updateDisplay(displayValue);
+        updateDisplay(displayValue = 0);
     } else if (displayValue >= -9 && displayValue <= -1) {
-        displayValue = 0;
-        updateDisplay(displayValue);
+        updateDisplay(displayValue = 0);
     } else if (operatorActive == false && equalsActive == false) {
         displayValue = displayValue.toString()
-        displayValue = displayValue.substring(0, (displayValue.length - 1));
+        displayValue = displayValue.substring(0, (displayValue.toString().length - 1));
         updateDisplay(displayValue);
     }
 }
@@ -117,16 +121,13 @@ function backspacePress(buttonId) {
 function numberPress(buttonId) {
     if (displayValue === 0) {
         clear();
-        displayValue = buttonId;
-        updateDisplay(displayValue);
+        updateDisplay(displayValue = buttonId);
     } else if (operatorActive == true || equalsActive == true) {
-        displayValue = buttonId;
-        updateDisplay(displayValue);
+        updateDisplay(displayValue = buttonId);
         operatorActive = false;
         equalsActive = false;
     } else if (operatorActive === false && displayValue.length < 9) {
-        displayValue += `${buttonId}`;
-        updateDisplay(displayValue);
+        updateDisplay(displayValue += buttonId);
     }
 }
 

@@ -81,7 +81,10 @@ function clear() {
 }
 
 function decimalPress() {
-    if (isDecimalAllowed) {
+    if (operatorActive) {
+        updateDisplay(displayValue = "0" + buttonId);
+        operatorActive = false;
+    } else if (isDecimalAllowed) {
         displayValue += '.';
         updateDisplay(displayValue);        
         isDecimalAllowed = false;
@@ -99,23 +102,17 @@ function plusMinusPress() {
     }
 }
 
-function zeroZeroPress() {
-    buttonPress(0);
-    buttonPress(0);
-}
-
 function backspacePress(buttonId) {
-    if (displayValue == 0) {
+    positiveDisplayValue = Math.sqrt(parseFloat(displayValue) * parseFloat(displayValue));
+    if (positiveDisplayValue.toString().length === 1) {
         updateDisplay(displayValue = 0);
-    } else if (displayValue.length <= 1) {
-        updateDisplay(displayValue = 0);
-    } else if (displayValue >= -9 && displayValue <= -1) {
-        updateDisplay(displayValue = 0);
-    } else if (operatorActive == false && equalsActive == false) {
-        displayValue = displayValue.toString()
-        displayValue = displayValue.substring(0, (displayValue.toString().length - 1));
-        updateDisplay(displayValue);
+    } else {
+        updateDisplay(displayValue = displayValue.toString().substring(0, (displayValue.toString().length - 1)));
     }
+    if (1 / displayValue === -Infinity || displayValue == 0) {
+        updateDisplay(displayValue = 0);
+    }
+    console.log(parseInt('-0.'));
 }
 
 function numberPress(buttonId) {

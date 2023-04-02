@@ -2,7 +2,6 @@ const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('.buttons');
 const clearButton = document.getElementById('clear');
 var displayValue = 0;
-updateDisplay(displayValue);
 var firstOperand = undefined;
 var secondOperand = undefined;
 var operator = '';
@@ -13,6 +12,8 @@ var operatorActive = false; // Changes the mode of the operator buttons.
 
 // Listens for click events on the HTML buttons, 
 // calls subsequent function based on buttonID.
+
+updateDisplay(displayValue);
 
 buttons.forEach((button) => {
     button.addEventListener('mouseup', (e) => {
@@ -71,7 +72,6 @@ function clear() {
     result = undefined;
     equalsActive = false;
     operatorActive = false;
-    display.style.setProperty('font-size', '3rem');
 }
 
 function clearError() {
@@ -105,17 +105,20 @@ function plusMinusPress() {
 }
 
 function backspacePress(buttonId) {
-    // positiveDisplayValue allows the backspace button to work on integers between -9 and -1.  
+    // positiveDisplayValue is used to let this function zero-out 
+    // values between -9 and -1, instead of removing the last 
+    // character and leaving a - on the screen.
     positiveDisplayValue = Math.sqrt(parseFloat(displayValue) * parseFloat(displayValue));
     if (positiveDisplayValue.toString().length === 1) {
         updateDisplay(displayValue = 0);
     } else {
         updateDisplay(displayValue = displayValue.toString().substring(0, (displayValue.toString().length - 1)));
     }
-    // This covers a weird rare case where the display shows '-0.' This happens when deleting
-    // values between -1 and 0. '-0.' resolves to the number -0, which is an actual specific
-    // number in Javascript. No idea why. Instead of backspacing through -0., this
-    // option just zeroes the display before it can show '-0.'
+    // This covers a weird rare case where the display shows '-0.' 
+    // This happens when deleting values between -1 and 0. '-0.' resolves to
+    // the number -0, which is an actual specific number in Javascript. No idea
+    // why. Instead of backspacing through -0., this option just zeroes the
+    // display before it can show '-0.'
     if (1 / displayValue === -Infinity || displayValue == 0) {
         updateDisplay(displayValue = 0);
     }
@@ -196,13 +199,12 @@ function operatorPress(buttonId) {
 // Updates display, shows error if the value is too long.
 
 function updateDisplay() {
-    if (displayValue.toString().length <= 9) {
+    if (displayValue.toString().length < 9) {
         display.textContent = displayValue;
-    } else if (displayValue.toString().length > 14) {
+    } else if (displayValue.toString().length > 10) {
         errorMode();
-    } else if (displayValue.toString().length > 9) {
-        display.style.setProperty('font-size', '1.9rem');
-        display.textContent = displayValue;
+    } else {
+        display.textContent = displayValue.toExponential(4);
     }
 }
 
@@ -210,7 +212,6 @@ function updateDisplay() {
 // changes the clear button into a clear-error button.
 
 function errorMode() {
-    display.style.setProperty('font-size', '3rem');
     displayValue = 'error';
     display.textContent = displayValue;
     for (const button of buttons) { 

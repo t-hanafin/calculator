@@ -7,7 +7,7 @@ var firstOperand = undefined;
 var secondOperand = undefined;
 var operator = '';
 var result = undefined;
-var buttonId = ' ';
+var buttonId = '';
 var equalsActive = false; // Changes the mode of the equals button.
 var operatorActive = false; // Changes the mode of the operator buttons.
 
@@ -59,7 +59,7 @@ function buttonPress(buttonId) {
 }
 
 function clear() {
-    if (displayValue === 'error') {     // This recovers from error.
+    if (displayValue === 'error') {
         clearError();
     } else if (displayValue != 0) {
         displayValue = 0;
@@ -105,20 +105,24 @@ function plusMinusPress() {
 }
 
 function backspacePress(buttonId) {
+    // positiveDisplayValue allows the backspace button to work on integers between -9 and -1.  
     positiveDisplayValue = Math.sqrt(parseFloat(displayValue) * parseFloat(displayValue));
     if (positiveDisplayValue.toString().length === 1) {
         updateDisplay(displayValue = 0);
     } else {
         updateDisplay(displayValue = displayValue.toString().substring(0, (displayValue.toString().length - 1)));
     }
+    // This covers a weird rare case where the display shows '-0.' This happens when deleting
+    // values between -1 and 0. '-0.' resolves to the number -0, which is an actual specific
+    // number in Javascript. No idea why. Instead of backspacing through -0., this
+    // option just zeroes the display before it can show '-0.'
     if (1 / displayValue === -Infinity || displayValue == 0) {
         updateDisplay(displayValue = 0);
     }
-    console.log(parseInt('-0.'));
 }
 
 function numberPress(buttonId) {
-    if (displayValue === 0) {
+    if (displayValue == 0 && firstOperand === undefined) {
         clear();
         updateDisplay(displayValue = buttonId);
     } else if (operatorActive == true || equalsActive == true) {
@@ -170,6 +174,7 @@ function operatorPress(buttonId) {
     } else {
         secondOperand = displayValue;
     }
+
     if (operatorActive) {
         // Performs an operation on the second operator-button-press 
         // if there's only been one operand entered. 
@@ -191,20 +196,26 @@ function operatorPress(buttonId) {
 function updateDisplay() {
     if (displayValue.toString().length <= 9) {
         display.textContent = displayValue;
-    } else if (displayValue.toString().length > 20) {
-        display.textContent = displayValue;
-        // This puts the calculator into error mode and stops input. It also
-        // changes the clear button into a clear-error button (does not change)
-        // the HTML text on the clear button though.
-        for (const button of buttons) { 
-            button.disabled = true;     
-        }
-        clearButton.disabled = false;            
-        clearButton.textContent = "ce";
+    } else if (displayValue.toString().length > 14) {
+        errorMode();
     } else if (displayValue.toString().length > 9) {
         display.style.setProperty('font-size', '1.9rem');
         display.textContent = displayValue;
     }
+}
+
+// This puts the calculator into error mode and stops input. It also
+// changes the clear button into a clear-error button.
+
+function errorMode() {
+    display.style.setProperty('font-size', '3rem');
+    displayValue = 'error';
+    display.textContent = displayValue;
+    for (const button of buttons) { 
+        button.disabled = true;     
+    }
+    clearButton.disabled = false;            
+    clearButton.textContent = "ce";
 }
 
 // Mathematical functions.
@@ -226,9 +237,7 @@ function divide(firstOperand, secondOperand) {
     // returns 'error' if so. 
     if (secondOperand == 0) {
         alert('Don\'t divide by zero. Use your head next time.');
-        firstOperand = undefined;
-        secondOperand = undefined;
-        return result = 0;
+        clear();
     } else {
         return result = parseFloat(firstOperand) / parseFloat(secondOperand);
     }

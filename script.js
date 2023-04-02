@@ -87,7 +87,7 @@ function decimalPress() {
     if (operatorActive) {
         updateDisplay(displayValue = "0" + buttonId);
         operatorActive = false;
-    } else if (!displayValue.toString().includes('.')) {
+    } else if (!displayValue.toString().includes('.') && !equalsActive) {
         displayValue += '.';
         updateDisplay(displayValue);        
     }
@@ -122,14 +122,16 @@ function backspacePress(buttonId) {
 }
 
 function numberPress(buttonId) {
-    if (displayValue == 0 && firstOperand === undefined) {
+    if (displayValue === 0 && equalsActive) {
         clear();
         updateDisplay(displayValue = buttonId);
-    } else if (operatorActive == true || equalsActive == true) {
+    } else if (displayValue === 0) {
+        updateDisplay(displayValue = buttonId);
+    } else if (equalsActive || operatorActive) {
         updateDisplay(displayValue = buttonId);
         operatorActive = false;
         equalsActive = false;
-    } else if (operatorActive === false && displayValue.length < 15) {
+    } else {
         updateDisplay(displayValue += buttonId);
     }
 }

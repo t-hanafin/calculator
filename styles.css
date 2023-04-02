@@ -39,7 +39,7 @@ body {
 
 .buttons {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     min-width: 66px;
     height: 66px;
     padding: 10px;
@@ -58,10 +58,13 @@ body {
     user-select: none;
 }
 
-#backspace-icon {
-    font-size: 1.25rem;
+#plusminus {
+    font-size: 1.4rem;
 }
 
+.material-icons {
+    width: 10px;
+}
 
 .buttons:hover {
     background-color: #868686

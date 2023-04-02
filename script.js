@@ -32,7 +32,7 @@ function buttonPress(buttonId) {
         case 'equals':
             equalsPress();
             break;
-        case '+/-':
+        case 'plusminus':
             plusMinusPress();
             break;
         case 'backspace':

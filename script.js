@@ -1,6 +1,6 @@
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('.buttons');
-const clearButton = document.getElementById('clear');
+const clearButton = document.querySelector('clear');
 var displayValue = 0;
 var firstOperand = undefined;
 var secondOperand = undefined;
@@ -39,23 +39,12 @@ function buttonPress(buttonId) {
         case 'backspace':
             backspacePress(buttonId);
             break;
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            numberPress(buttonId);
-            break;
-        case 'zero':
-            numberPress(0);
-            break;
         default:
-            operatorPress(buttonId);
-            break;
+            if (buttonId >= '0' && buttonId <= '9') {
+                numberPress(buttonId);
+            } else {
+                operatorPress(buttonId);
+            }
     }
 }
 
@@ -108,7 +97,7 @@ function backspacePress(buttonId) {
     // positiveDisplayValue is used to let this function zero-out 
     // values between -9 and -1, instead of removing the last 
     // character and leaving a - on the screen.
-    positiveDisplayValue = Math.sqrt(parseFloat(displayValue) * parseFloat(displayValue));
+    positiveDisplayValue = Math.abs(displayValue);
     if (positiveDisplayValue.toString().length === 1) {
         updateDisplay(displayValue = 0);
     } else {
@@ -123,6 +112,7 @@ function backspacePress(buttonId) {
         updateDisplay(displayValue = 0);
     }
 }
+
 
 function numberPress(buttonId) {
     if (displayValue === 0 && equalsActive) {
